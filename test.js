@@ -170,32 +170,40 @@ const deleteUser = (req, res) => {
 
 // 3 ROUTES
 // these routers(middleware functions) only apply to a certain route
+// Mounting new routers on a route
+const tourRouter = express.Router();
+const userRouter = express.Router();
 
-app
-  .route('/api/v1/tours')
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/tours', tourRouter);
+
+tourRouter
+  .route('/')
   .get(getAllTours)
   .post(createTour);
+
 // order of middleware matters a lot
-app.use((req, res, next) => {
-  console.log(
-    `i come after req and res cycle ends for the route /api/v1/tours...... so i wont be executed
-     but since im defined before /api/v1/tours/:id middle function i will be executed'
-  `
-  );
-  next(); // NEVER FORGET OR REQ RES CYCLE WILL BE PENDING
-});
-app
-  .route('/api/v1/tours/:id')
+// app.use((req, res, next) => {
+//   console.log(
+//     `i come after req and res cycle ends for the route /api/v1/tours...... so i wont be executed
+//      but since im defined before /api/v1/tours/:id middle function i will be executed'
+//   `
+//   );
+//   next(); // NEVER FORGET OR REQ RES CYCLE WILL BE PENDING
+// });
+
+tourRouter
+  .route('/:id')
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour);
-app
-  .route('/api/v1/users')
+userRouter
+  .route('/')
   .get(getAllUsers)
   .post(createUser);
 
-app
-  .route('/api/v1/users/:id')
+userRouter
+  .route('  :id')
   .get(getUser)
   .patch(updateUser)
   .delete(deleteUser);

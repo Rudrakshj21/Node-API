@@ -5,6 +5,24 @@ const tours = JSON.parse(
     'utf-8'
   )
 );
+// parameterized middleware handler
+
+exports.checkID = (
+  req,
+  res,
+  next,
+  val
+) => {
+  console.log(`Tour id is : ${val}`);
+
+  if (+req.params.id >= tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+  next();
+};
 // since tours is being used here no need to export
 // 2 ROUTE HANDLERS
 exports.getAllTours = (req, res) => {
@@ -21,16 +39,16 @@ exports.getAllTours = (req, res) => {
 exports.getTour = (req, res) => {
   // optional params are  ?(:test?) but other params need to be hit or error occurs
   // console.log(req.params);
-  const id = +req.params.id;
+  // const id = +req.params.id;
   const tour = tours.find(
-    (tour) => tour.id === id
+    (tour) => tour.id === +req.params.id
   );
-  if (id >= tours.length || !tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
+  // if (id >= tours.length || !tour) {
+  //   return res.status(404).json({
+  //     status: 'fail',
+  //     message: 'Invalid ID',
+  //   });
+  // }
   res.status(200).json({
     // jSend specification
     status: 'success',
@@ -68,13 +86,13 @@ exports.createTour = (req, res) => {
 };
 exports.updateTour = (req, res) => {
   // just verifying id
-  const id = +req.params.id;
-  if (id >= tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
+  // const id = +req.params.id;
+  // // if (id >= tours.length) {
+  // //   return res.status(404).json({
+  // //     status: 'fail',
+  // //     message: 'Invalid ID',
+  // //   });
+  // // }
   // some logic for updating ........
   res.status(200).json({
     status: 'success',
@@ -86,14 +104,14 @@ exports.updateTour = (req, res) => {
 exports.deleteTour = (req, res) => {
   // just verifying id
 
-  const id = +req.params.id;
+  // const id = +req.params.id;
 
-  if (id >= tours.length || id < 0) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
+  // if (id >= tours.length || id < 0) {
+  //   return res.status(404).json({
+  //     status: 'fail',
+  //     message: 'Invalid ID',
+  //   });
+  // }
   // some logic for delete ........
   res.status(204).json({
     // A 204 status code is used when the server successfully processes the request, but there is no content to return to the client.

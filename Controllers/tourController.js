@@ -16,6 +16,10 @@ exports.checkID = (
   console.log(`Tour id is : ${val}`);
 
   if (+req.params.id >= tours.length) {
+    /*
+    very crucial that this returns (end program) as once the response has been send (res.json)
+    one req-res cycle is done and we do not need to call next() middleware 
+    */
     return res.status(404).json({
       status: 'fail',
       message: 'Invalid ID',

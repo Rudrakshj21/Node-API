@@ -9,23 +9,17 @@ app.use(morgan('dev'));
 app.use(express.json()); //middleware
 // custom middleware
 app.use((req, res, next) => {
-  console.log(
-    'Hello from middleware hehehe '
-  );
+  console.log('Hello from middleware hehehe ');
   next(); // NEVER FORGET
 });
 
 app.use((req, res, next) => {
-  req.requestTime =
-    new Date().toISOString();
+  req.requestTime = new Date().toISOString();
 
   next();
 });
 const tours = JSON.parse(
-  fs.readFileSync(
-    `${__dirname}/dev-data/data/tours-simple.json`,
-    'utf-8'
-  )
+  fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf-8')
 );
 // 2 ROUTE HANDLERS
 const getAllTours = (req, res) => {
@@ -43,9 +37,7 @@ const getTour = (req, res) => {
   // optional params are  ?(:test?) but other params need to be hit or error occurs
   // console.log(req.params);
   const id = +req.params.id;
-  const tour = tours.find(
-    (tour) => tour.id === id
-  );
+  const tour = tours.find((tour) => tour.id === id);
   if (id >= tours.length || !tour) {
     return res.status(404).json({
       status: 'fail',
@@ -63,12 +55,8 @@ const getTour = (req, res) => {
 
 const createTour = (req, res) => {
   // console.log(req.body);
-  const newId =
-    tours[tours.length - 1].id + 1; //last id + 1
-  const newTour = Object.assign(
-    { id: newId },
-    req.body
-  );
+  const newId = tours[tours.length - 1].id + 1; //last id + 1
+  const newTour = Object.assign({ id: newId }, req.body);
   console.log(newTour);
   tours.push(newTour);
   // using async operation to ensure the event look is not blocked especially inside a callback function
@@ -128,37 +116,32 @@ const deleteTour = (req, res) => {
 const getAllUsers = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message:
-      'This route is not implemented yet',
+    message: 'This route is not implemented yet',
   });
   // 500 - internal server error
 };
 const createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message:
-      'This route is not implemented yet',
+    message: 'This route is not implemented yet',
   });
 };
 const getUser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message:
-      'This route is not implemented yet',
+    message: 'This route is not implemented yet',
   });
 };
 const updateUser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message:
-      'This route is not implemented yet',
+    message: 'This route is not implemented yet',
   });
 };
 const deleteUser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message:
-      'This route is not implemented yet',
+    message: 'This route is not implemented yet',
   });
 };
 
@@ -177,10 +160,7 @@ const userRouter = express.Router();
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);
 
-tourRouter
-  .route('/')
-  .get(getAllTours)
-  .post(createTour);
+tourRouter.route('/').get(getAllTours).post(createTour);
 
 // order of middleware matters a lot
 // app.use((req, res, next) => {
@@ -192,25 +172,12 @@ tourRouter
 //   next(); // NEVER FORGET OR REQ RES CYCLE WILL BE PENDING
 // });
 
-tourRouter
-  .route('/:id')
-  .get(getTour)
-  .patch(updateTour)
-  .delete(deleteTour);
-userRouter
-  .route('/')
-  .get(getAllUsers)
-  .post(createUser);
+tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
+userRouter.route('/').get(getAllUsers).post(createUser);
 
-userRouter
-  .route('  :id')
-  .get(getUser)
-  .patch(updateUser)
-  .delete(deleteUser);
+userRouter.route('  :id').get(getUser).patch(updateUser).delete(deleteUser);
 // 4 SERVER
 const port = 3000;
 app.listen(port, () => {
-  console.log(
-    `App  running on port : ${port}`
-  );
+  console.log(`App  running on port : ${port}`);
 });

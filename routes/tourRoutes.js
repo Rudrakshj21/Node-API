@@ -1,11 +1,11 @@
 const tourController = require('./../controllers/tourController');
 const router = express.Router();
-const {checkID} = require('../controllers/tourController');
+const { checkID } = require('../controllers/tourController');
 
-// parameterized middleware which only gets executed if : 
-// 1) route is for this url 
+// parameterized middleware which only gets executed if :
+// 1) route is for this url
 // 2) id has been specified
-router.param('id',checkID)
+router.param('id', checkID);
 
 router
   .route('/')

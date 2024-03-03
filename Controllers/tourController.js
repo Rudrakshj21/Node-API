@@ -1,18 +1,10 @@
 const fs = require('fs');
 const tours = JSON.parse(
-  fs.readFileSync(
-    `${__dirname}/dev-data/data/tours-simple.json`,
-    'utf-8'
-  )
+  fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf-8')
 );
 // parameterized middleware handler
 
-exports.checkID = (
-  req,
-  res,
-  next,
-  val
-) => {
+exports.checkID = (req, res, next, val) => {
   console.log(`Tour id is : ${val}`);
 
   if (+req.params.id >= tours.length) {
@@ -44,9 +36,7 @@ exports.getTour = (req, res) => {
   // optional params are  ?(:test?) but other params need to be hit or error occurs
   // console.log(req.params);
   // const id = +req.params.id;
-  const tour = tours.find(
-    (tour) => tour.id === +req.params.id
-  );
+  const tour = tours.find((tour) => tour.id === +req.params.id);
   // if (id >= tours.length || !tour) {
   //   return res.status(404).json({
   //     status: 'fail',
@@ -64,12 +54,8 @@ exports.getTour = (req, res) => {
 
 exports.createTour = (req, res) => {
   // console.log(req.body);
-  const newId =
-    tours[tours.length - 1].id + 1; //last id + 1
-  const newTour = Object.assign(
-    { id: newId },
-    req.body
-  );
+  const newId = tours[tours.length - 1].id + 1; //last id + 1
+  const newTour = Object.assign({ id: newId }, req.body);
   console.log(newTour);
   tours.push(newTour);
   // using async operation to ensure the event look is not blocked especially inside a callback function

@@ -15,8 +15,11 @@ router
 router
   .route('/:id')
   .get(tourController.getTour)
-  .patch(Controller.updateTour)
+  .patch(tourController.updateTour)
   .delete(tourController.deleteTour);
 
+router
+  .route('/top-5-cheap')
+  .get(tourController.aliasTopTours, tourController.getAllTours);
 //   convention to use name as router
 module.exports = router;

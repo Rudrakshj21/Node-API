@@ -1,11 +1,17 @@
 const Tour = require('./../models/tourModel');
+exports.aliasTopTours = (req, res, next) => {
+  req.body.limit = '5';
+  req.body.sort = '-ratingsAverage,price';
+  req.body.fields = 'name,price,ratingsAverage,duration,summary';
+  next();
+};
 
 exports.getAllTours = async (req, res) => {
   // a sample query string : api/v1/tours/?duration=5&difficulty=easy&name=test
   // req.query = {duration : 5 , difficulty : 'easy' , name : 'test'}
   // Tours.find(req.query) will give us the documents based on filter object passed
   // but not all properties on query string related to fields of document
-  // example page limit
+  // example page,  limit
   // another way is to chain methods
   // Tour.find().where('duration).equals(5).where('difficulty').equals(5).where('name).equals(test)
 
@@ -104,7 +110,7 @@ exports.getAllTours = async (req, res) => {
     if (req.query.page) {
       // independent of query
       const totalDocuments = await Tour.countDocuments();
-      if (totalDocuments >= skip) {
+      if (totalDocuments <= skip) {
         throw new Error('Page does not exist');
       }
     }
